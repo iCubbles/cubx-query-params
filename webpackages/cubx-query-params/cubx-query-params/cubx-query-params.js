@@ -22,8 +22,6 @@
      * Manipulate an element’s local DOM when the element is created and initialized.
      */
     ready: function () {
-      // set value-attribute of element with id='slota' to the initial value of slot 'a'
-      this.$.slota.setAttribute('value', this.getA());
     },
 
     /**
@@ -36,23 +34,56 @@
      * Manipulate an element’s local DOM when the cubbles framework is initialized and ready to work.
      */
     cubxReady: function () {
+      var parameters = this._getParameter();
+      if (parameters) {
+        this.setAllSearchParams(parameters);
+      } else {
+        this.setAllSearchParams({});
+      }
     },
 
     /**
-     * A handler to be called by a dom-element
-     * @param {event} event
+     *  Observe the Cubbles-Component-Model: If value for slot 'newSearchParams' has changed ...
      */
-    inputFieldSlotAChanged: function (event) {
-      // update the cubbles-model
-      this.setA(event.target.value);
+    modelNewSearchParamsChanged: function (searchParams) {
+      Object.keys(searchParams).forEach(function (param) {
+        this.getAllSearchParams()[param] = searchParams[param];
+        this._updateLocationSearch();
+      }.bind(this));
     },
 
     /**
-     *  Observe the Cubbles-Component-Model: If value for slot 'a' has changed ...
+     * Update location search properties according to 'allSearchParams' slot value
+     * @private
      */
-    modelAChanged: function (newValue) {
-      // update the view
-      this.$.slota.setAttribute('value', newValue);
+    _updateLocationSearch: function () {
+      var searchString = '';
+      Object.keys(this.getAllSearchParams()).forEach(function (param, i) {
+        searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' + encodeURIComponent(this.getAllSearchParams()[param]);
+      }.bind(this));
+      if (searchString) {
+        document.location.search = '?' + searchString;
+      }
+    },
+
+    /**
+     * Read url search parameters
+     * @param {string} [param] - name of the parameter to read
+     * @returns {*} the value of the parameter or null if the parameter was not in the url, or all
+     * parameters if the no 'param' is provided
+     */
+    _getParameter: function (param) {
+      var vars = {};
+      window.location.search.replace(
+        /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
+        function (m, key, value) { // callback
+          vars[decodeURIComponent(key)] = value !== undefined ? decodeURIComponent(value) : '';
+        }
+      );
+      if (param) {
+        return vars[param] ? vars[param] : null;
+      }
+      return vars;
     }
   });
 }());

@@ -52,13 +52,20 @@
         ],
         "slots": [
           {
-            "slotId": "a",
-            "type": "number",
+            "slotId": "newSearchParams",
+            "type": "object",
+            "description": "Allows setting url search parameters using key value JSON objects, e.g. {\"paramName1\": \"paramValue1\", ..., \"paramNameN\": \"paramValueN\"}",
             "direction": [
-              "input",
+              "input"
+            ]
+          },
+          {
+            "slotId": "allSearchParams",
+            "type": "object",
+            "description": "Allows gettinng all url search parameters as key value JSON objects, e.g. {\"paramName1\": \"paramValue1\", ..., \"paramNameN\": \"paramValueN\"}",
+            "direction": [
               "output"
-            ],
-            "value": 10
+            ]
           }
         ]
       }
