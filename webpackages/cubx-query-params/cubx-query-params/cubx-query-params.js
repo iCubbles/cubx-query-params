@@ -46,6 +46,9 @@
      *  Observe the Cubbles-Component-Model: If value for slot 'newSearchParams' has changed ...
      */
     modelNewSearchParamsChanged: function (searchParams) {
+      if (this.getClearWhenChange()) {
+        this.setAllSearchParams({});
+      }
       Object.keys(searchParams).forEach(function (param) {
         this.getAllSearchParams()[param] = searchParams[param];
         this._updateLocationSearch();
