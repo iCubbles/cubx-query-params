@@ -59,7 +59,9 @@
     _updateLocationSearch: function () {
       var searchString = '';
       Object.keys(this.getAllSearchParams()).forEach(function (param, i) {
-        searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' + encodeURIComponent(this.getAllSearchParams()[param]);
+        // searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' + encodeURIComponent(this.getAllSearchParams()[param]);
+        searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' +
+          encodeURIComponent(JSON.stringify(this.getAllSearchParams()[param]));
       }.bind(this));
       if (searchString) {
         document.location.search = '?' + searchString;
@@ -77,7 +79,8 @@
       window.location.search.replace(
         /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
         function (m, key, value) { // callback
-          vars[decodeURIComponent(key)] = value !== undefined ? decodeURIComponent(value) : '';
+          vars[decodeURIComponent(key)] = value !== undefined
+            ? JSON.parse(decodeURIComponent(value)) : '';
         }
       );
       if (param) {
