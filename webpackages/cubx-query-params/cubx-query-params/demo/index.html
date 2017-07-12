@@ -11,9 +11,48 @@
 </head>
 <body>
 <!--  Place cubbles components there. -->
-<cubx-query-params cubx-webpackage-id="this">
+<cubx-query-params cubx-webpackage-id="this"></cubx-query-params>
 
-</cubx-query-params>
+<h3>Input slot</h3>
+<label for="newSearchParamsTA">newSearchParams (object)</label>
+<div><textarea id="newSearchParamsTA" cols="50" rows="14"></textarea></div>
+<button id="newSearchParamsBtn" disabled>Set Params</button>
+<hr>
+<h3>Output slot</h3>
+<div><button id="allSearchParamsBtn" disabled>Get All Params</button></div>
+<label for="allSearchParamsTA">allSearchParams (object)</label>
+<div><textarea id="allSearchParamsTA" cols="50" rows="14"></textarea></div>
+<script>
+    (function () {
+        'use strict';
+        var cubxQueryParams = document.querySelector('cubx-query-params');
+        var newSearchParamsBtn = document.querySelector('#newSearchParamsBtn');
+        var allSearchParamsBtn = document.querySelector('#allSearchParamsBtn');
+        var newSearchParamsTA = document.querySelector('#newSearchParamsTA');
+        var allSearchParamsTA = document.querySelector('#allSearchParamsTA');
+        var newSearchParams = {
+            name: "John Doe",
+            birthDate: "1967-08-02",
+            id: 1,
+            hobbies: ["sports", "reading"],
+            birthPlace: {country: "Colombia", city: "Cali"}
+        };
+        document.addEventListener('cifReady', function () {
+            newSearchParamsTA.value = JSON.stringify(newSearchParams, null, 2);
+
+            newSearchParamsBtn.removeAttribute('disabled');
+            allSearchParamsBtn.removeAttribute('disabled');
+        });
+
+        newSearchParamsBtn.addEventListener('click', function () {
+            cubxQueryParams.setNewSearchParams(newSearchParams);
+        });
+        allSearchParamsBtn.addEventListener('click', function () {
+            var allParams = cubxQueryParams.getAllSearchParams();
+            allSearchParamsTA.value = JSON.stringify(allParams, null, 2);
+        });
+    })();
+</script>
 
 </body>
 </html>
