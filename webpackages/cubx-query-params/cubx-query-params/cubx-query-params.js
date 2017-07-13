@@ -1,3 +1,4 @@
+/* global history*/
 (function () {
   'use strict';
   /**
@@ -67,7 +68,8 @@
           encodeURIComponent(JSON.stringify(this.getAllSearchParams()[param]));
       }.bind(this));
       if (searchString) {
-        document.location.search = '?' + searchString;
+        history.pushState(null, '', '?' + searchString);
+        // document.location.search = '?' + searchString;
       }
     },
 
