@@ -36,6 +36,7 @@
         var allSearchParamsTA = document.querySelector('#allSearchParamsTA');
         var clearWhenChangeCB = document.querySelector('#clearWhenChangeCB');
         document.addEventListener('cifReady', function () {
+            cubxQueryParams.setClearWhenChange(true);
             var newSearchParams = {
                 name: "John Doe",
                 birthDate: "1967-08-02",
