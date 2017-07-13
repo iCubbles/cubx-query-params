@@ -35,12 +35,10 @@
      * Manipulate an element’s local DOM when the cubbles framework is initialized and ready to work.
      */
     cubxReady: function () {
-      var parameters = this._getParameter();
-      if (parameters) {
-        this.setAllSearchParams(parameters);
-      } else {
-        this.setAllSearchParams({});
-      }
+      this._checkSearchParams();
+      window.onpopstate = function () {
+        this._checkSearchParams();
+      }.bind(this);
     },
 
     /**
@@ -56,6 +54,15 @@
       }.bind(this));
     },
 
+    _checkSearchParams: function () {
+      var parameters = this._getParameter();
+      if (parameters) {
+        this.setAllSearchParams(parameters);
+      } else {
+        this.setAllSearchParams({});
+      }
+    },
+
     /**
      * Update location search properties according to 'allSearchParams' slot value
      * @private
@@ -63,13 +70,11 @@
     _updateLocationSearch: function () {
       var searchString = '';
       Object.keys(this.getAllSearchParams()).forEach(function (param, i) {
-        // searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' + encodeURIComponent(this.getAllSearchParams()[param]);
         searchString += (i > 0 ? '&' : '') + encodeURIComponent(param) + '=' +
           encodeURIComponent(JSON.stringify(this.getAllSearchParams()[param]));
       }.bind(this));
       if (searchString) {
         history.pushState(null, '', '?' + searchString);
-        // document.location.search = '?' + searchString;
       }
     },
 
