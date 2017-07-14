@@ -54,6 +54,10 @@
       }.bind(this));
     },
 
+    /**
+     * Get the current url parameters and update 'allSearchParams' slot
+     * @private
+     */
     _checkSearchParams: function () {
       var parameters = this._getParameter();
       if (parameters) {
